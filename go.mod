@@ -1,4 +1,4 @@
-module go-nginx-sample/go
+module go-catchup/go
 
 go 1.21.3
 
