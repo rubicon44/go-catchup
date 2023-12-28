@@ -1,12 +1,30 @@
 version: '3'
+
 services:
   app:
-    build:
-      context: .
-      dockerfile: ./Dockerfile
-    tty: true
-    volumes:
-      - .:/go/src/app
+    build: .
     ports:
-      - "3006:3006"
-    working_dir: /go/src/app
+      - 8080:8080
+    container_name: sample_app
+    volumes:
+      - ./src/app:/go/src/app
+    tty: true
+    restart: always
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:14-alpine
+    platform: linux/amd64
+    container_name: sample_db
+    environment:
+      POSTGRES_DB: sample
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
